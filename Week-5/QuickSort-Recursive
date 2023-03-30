@@ -1,0 +1,74 @@
+#include <iostream>
+#include<list>
+#include<iomanip>
+using namespace std;
+
+void swap(int *a,int *b){
+    int temp = *a;
+    *a=*b;
+    *b = temp;
+}
+
+int partition (int A[], int p, int r){
+    int x = A[r];
+    int i = p - 1;
+    for (int j = p; j <= r- 1; j++){
+        if (A[j] <= x)
+            swap (&A[++i], &A[j]);
+        
+    }        
+    swap (&A[i + 1], &A[r]);
+    return (i + 1);
+}
+
+void quickSort(int A[], int p, int r){
+    if (p < r){
+        int q = partition(A, p,r);
+        quickSort(A, p, q - 1);
+        quickSort(A, q + 1, r);
+    }
+}
+double getMedian(int A[], int n){
+    double median = 0;
+    if(n % 2 == 0)
+        median = (double)(A[n/2 - 1] + A[n/2]) / 2;
+    else
+        median = (double)A[n/2];
+    return median;
+}
+
+int main(){
+    int a[] = {2,6,5,1,3,4};
+    int n = sizeof(a)/sizeof(a[0]);
+    // quickSort(a,0,n-1);
+    // for(int i=0;i<n;i++)
+    //     cout<<a[i]<<" ";
+    // cout<<endl; 
+
+    cout << left << setw(28) << "Sorted" << "Median" << endl;
+
+    for(int i=1; i<=n; i++){
+        int spaces = i*2+1;
+        int numbers[i];
+        string number;
+
+        for(int j = 0; j < i; j++)
+            numbers[j] = a[j];
+        
+        quickSort(numbers, 0, i-1);
+
+        number += "  [";
+
+        for(int k = 0; k  < i; k++){
+            if(k==i-1)
+                number = number + to_string(numbers[k]) + "]";
+            else
+                number = number + to_string(numbers[k]) + ", ";
+        }
+
+        double median = getMedian(numbers, i);
+        cout << left << setw(30) << number
+             << fixed << setprecision(1) << median << endl;
+    }
+    return 0;
+}
