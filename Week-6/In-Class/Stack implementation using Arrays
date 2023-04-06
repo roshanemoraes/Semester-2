@@ -1,6 +1,3 @@
-//Here, I implemented a stack using Arrays.
-
-
 #include <iostream>
 #include <chrono>
 #include <unistd.h>
@@ -52,6 +49,7 @@ public:
     void pop() {
         if (isEmpty()) {
             cout << "Stack underflow" << endl;
+            throw std::logic_error("Stack underflow!");
             return;
         }
         head--;
@@ -100,7 +98,7 @@ int main() {
     stack.push(17);
     stack.display();
     // Using a for-loop to pop numbers. 
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 11; i++){
         stack.pop();
     }
     stack.display();
