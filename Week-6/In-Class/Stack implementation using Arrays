@@ -1,0 +1,121 @@
+//Here, I implemented a stack using Arrays.
+
+
+#include <iostream>
+#include <chrono>
+#include <unistd.h>
+
+using namespace std;
+// This is the Class tack.
+class Stack {
+private:
+    int head;
+    int* array;
+    int arraySize;
+
+public:
+    Stack(int arraySize) {
+        head = -1;
+        this->arraySize = arraySize;
+        array = new int[arraySize];
+    }
+
+    ~Stack() {
+        delete[] array;
+    }
+
+    // This will return whether the stack is empty.
+    bool isEmpty() {
+        return head == -1;
+    }
+
+    // This will return whether the stack is full.
+    bool isFull() {
+        return head == arraySize - 1;
+    }
+
+    // This will add a next item to the Stack.
+    // ( Add to the end of the array.)
+    void push(int value) {
+        if (isFull()) {
+            cout << "Stack overflow" << endl;
+            // Here, I'm using an exception
+            throw std::logic_error("Stack overflow!");
+            return;
+        }
+        array[++head] = value;
+        display();
+    }
+
+    // This will remove the value at the top of the Stack.
+    // ( Last element of the array.)
+    void pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow" << endl;
+            return;
+        }
+        head--;
+    }
+
+    // This will return the value at the top of the Stack.
+    // (Last element of the array.)
+    int stackTop() {
+        if (isEmpty()) {
+            cout << "Stack is empty" << endl;
+            return -1;
+        }
+        return array[head];
+    }
+
+    // This will display the content.
+    void display() {
+        cout << "Stack: ";
+        for (int i = 0; i <= head; i++) {
+            cout << array[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    cout << "Welcome to data Structures and Algorithm In-Class Lab - 5" << endl << endl
+         << "Implementation of Stack using Arrays." << endl << endl;
+
+    cout << "Enter the array Size: ";
+    int arraySize;
+    cin >> arraySize;
+
+    Stack stack(arraySize);
+
+    auto start = chrono::steady_clock::now();
+    stack.push(8);
+    stack.push(10);
+    stack.push(5);
+    stack.push(11);
+    stack.push(15);
+    stack.push(23);
+    stack.push(6);
+    stack.push(18);
+    stack.push(20);
+    stack.push(17);
+    stack.display();
+    // Using a for-loop to pop numbers. 
+    for(int i = 0; i < 5; i++){
+        stack.pop();
+    }
+    stack.display();
+    stack.push(4);
+    stack.push(30);
+    stack.push(3);
+    stack.push(1);
+    stack.display();
+    auto end = chrono::steady_clock::now();
+
+    chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+
+    cout << "Elapsed time in nanoseconds: "
+        << chrono::duration_cast<chrono::microseconds>(end - start).count()
+        << " micro seconds" << endl;
+
+    return 0;
+}
