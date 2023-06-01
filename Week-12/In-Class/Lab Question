@@ -1,0 +1,15 @@
+Here we have 6 cities in a rural area. It has been estimated that for the population of all
+6 cities building 1 hospital is sufficient and cost effective. As part of the City planning
+division, you are tasked to decide which city we must build the hospital in. To do this
+one must think of alot constraints, eg: one can decide to place the hospital at the city
+with the highest population among the 6 cities. Assume that all the other constraints
+are equal in each city. You must place the hospital such that the ambulances in the
+hospital can attend to each city at the shortest time. The weighted undirected graph
+provided in Fig.1 has cities as nodes and edges as average time taken from each city to
+another city(where possible not all cities have roads between them).
+
+By changing the source node, need to take the shortest time between
+source city to all the other cities. (Eg: if source city 0, then you must calculate
+the shortest time between City 0 to City 1, City 0 to City 2, City 0 to City 3...
+etc).
+
