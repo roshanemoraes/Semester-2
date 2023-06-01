@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+int dijkstra(const vector<vector<int>>& graph, int numberOfCities, int source, int destination) {
+
+    vector<int> distance(numberOfCities, INT_MAX);     // Stores the shortest distance from source to each vertex
+    vector<bool> visited(numberOfCities, false); // Keeps track of visited vertices
+
+    // Distance from source to itself is 0
+    distance[source] = 0;
+
+    // Find shortest path for all vertices
+    for (int count = 0; count < numberOfCities - 1; ++count) {
+        int u = -1;
+
+        // Find the vertex with the minimum distance from the set of unvisited vertices
+        for (int v = 0; v < numberOfCities; ++v) {
+            if (!visited[v] && (u == -1 || distance[v] < distance[u]))
+                u = v;
+        }
+
+        // Mark the selected vertex as visited
+        visited[u] = true;
+
+        // Update distances of the adjacent vertices of the selected vertex
+        for (int v = 0; v < numberOfCities; ++v) {
+            if (!visited[v] && graph[u][v] != 0 && distance[u] != INT_MAX &&
+                distance[u] + graph[u][v] < distance[v]) {
+                distance[v] = distance[u] + graph[u][v];
+            }
+        }
+    }
+
+    return distance[destination];
+}
+
+int main() {
+    // Number of Cities
+    int numberOfCities = 6;
+
+    // Initializing the graph
+    vector<vector<int>> graph = {
+        {0, 10, 0, 0, 15, 5},
+        {10, 0, 10, 30, 0, 0},
+        {0, 10, 0, 12, 5, 0},
+        {0, 30, 12, 0, 0, 20},
+        {15, 0, 5, 0, 0, 0},
+        {5, 0, 0, 20, 0, 0}
+    };
+
+    // insert the needed source (0, 1, 2, 3, 4, 5)
+    int source = 3;
+    cout << "From City" << source << "," << endl;
+
+    // Looping over every destination of the source and calculating the shortest distance.
+    for (int destination = 0; destination < 6; destination++) {
+            if(source == destination) continue;
+            int shortestTime = dijkstra(graph, numberOfCities, source, destination);
+
+            cout << "Shortest time for City" 
+                 << destination << " = " 
+                 << shortestTime << endl;
+        }
+
+    return 0;
+}
