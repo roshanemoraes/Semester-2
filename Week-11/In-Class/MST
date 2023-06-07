@@ -1,0 +1,86 @@
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+ 
+// Number of vertices in the graph
+#define numberOfVertices 6
+ 
+// Function to get the index of the vertex with the minimum key value
+int getMinimumKeyIndex(int key[], bool mstSet[]){
+    int min = INT_MAX, minimumIndex;
+ 
+    for (int v = 0; v < numberOfVertices; v++)
+        // Check if the vertex is unvisited and has a smaller key value
+        if (mstSet[v] == false && key[v] < min)
+            // Update the minimum key value and index
+            min = key[v], minimumIndex = v;
+ 
+    return minimumIndex;
+}
+ 
+// Printing the constructed MST.
+void printMST(int parent[], int graph[numberOfVertices][numberOfVertices])
+{
+    printf("Edge\t: Weight\n");
+    for (int i = 1; i < numberOfVertices; i++)
+        printf("%d - %d\t:   %d \n", parent[i], i,
+               graph[i][parent[i]]);
+}
+ 
+void primMST(int graph[numberOfVertices][numberOfVertices])
+{
+    // storing constructed MST
+    int parent[numberOfVertices];
+
+    // storing key values used to pick the minimum weight edge in cut
+    int key[numberOfVertices];
+
+    // storing vertices included in MST
+    bool mstSet[numberOfVertices];
+ 
+    for (int i = 0; i < numberOfVertices; i++)
+        key[i] = INT_MAX, mstSet[i] = false;
+ 
+    // Key of the starting array should be zero.
+    key[0] = 0;
+   
+    // The first node is always the root of MST
+    parent[0] = -1;
+ 
+    for (int count = 0; count < numberOfVertices - 1; count++) {
+         
+        // Picking the minimum key vertex from the set of vertices not yet included in MST
+        int currentVertex = getMinimumKeyIndex(key, mstSet);
+ 
+        // Adding the picked vertex to the MST Set
+        mstSet[currentVertex] = true;
+ 
+        // Updating key value and parent index of the adjacent vertices of the picked vertex.(only those vertices which are not yet included in MST)
+
+        for (int v = 0; v < numberOfVertices; v++)
+ 
+            // graph[currentVertex][v] is non zero only for adjacent vertices of m mstSet[v] is false for 
+            // vertices not yet included in MST 
+
+            // Update the key only if graph[currentVertex][v] is smaller than key[v]
+            if (graph[currentVertex][v] && mstSet[v] == false
+                && graph[currentVertex][v] < key[v])
+                parent[v] = currentVertex, key[v] = graph[currentVertex][v];
+    }
+ 
+    printMST(parent, graph);
+}
+ 
+int main(){
+    int graph[numberOfVertices][numberOfVertices] = { 
+        {0, 3, 0, 0, 0, 1},
+        {3, 0, 2, 1, 10, 0},
+        {0, 2, 0, 3, 0, 5},
+        {0, 1, 3, 0, 5, 0},
+        {0, 10, 0, 5, 0, 4},
+        {1, 0, 5, 0, 4, 0} };
+ 
+    primMST(graph);
+ 
+    return 0;
+}
